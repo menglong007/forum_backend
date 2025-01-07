@@ -10,21 +10,23 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy the solution and project files for dependency resolution
-COPY WebApplication1/WebApplication1.csproj ./WebApplication1/
+COPY ["WebApplication1.csproj", "WebApplication1/"]
 
 # Restore dependencies
-RUN dotnet restore "WebApplication1/WebApplication1.csproj"
+RUN dotnet restore "./WebApplication1/WebApplication1.csproj"
 
 # Copy the rest of the application source code
-COPY . ./ 
+COPY . /src/WebApplication1
+
+# Set the working directory to where the project file is located
+WORKDIR "/src/WebApplication1"
 
 # Build the application
-RUN dotnet build "WebApplication1/WebApplication1.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./WebApplication1.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Publish the application
 FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "WebApplication1/WebApplication1.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./WebApplication1.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # Final runtime image
 FROM base AS final
