@@ -9,7 +9,8 @@ public class CommentDetailResponse
     public string Username { get; set; } = null!;
     public string Comment { get; set; } = null!;
     
-    public int TotalLike { get; set; } 
+    public int TotalLike { get; set; }
+    public DateTime Created { get; set; }
     
     public int TotalDislike { get; set; } 
     

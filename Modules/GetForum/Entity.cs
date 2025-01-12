@@ -22,6 +22,7 @@ public class ForumEntity :  IdEntity
     public ICollection<CommentEntity> Comments { get; set; } = null!;
     public UserEntity User { get; set; }
     public int UserId { get; set; }
+    public bool IsSaved { get; set; } = false;
     
     public DateTime Created { get; set; }
     public ICollection<SavedEntity> SavedItems { get; set; } = null!;

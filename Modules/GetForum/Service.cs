@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Core;
 using WebApplication1.Modules.Comment;
+using WebApplication1.Modules.Saved;
 using WebApplication1.Modules.User;
 
 namespace WebApplication1.Modules.GetForum;
@@ -18,6 +19,7 @@ public interface IForumService
 
 public class ForumService(
 IForumRepository repository,
+ISavedRepository repositorySaved,
 IMapper mapper,
 IUserRepository repositoryUser
 ) : IForumService
@@ -33,7 +35,7 @@ IUserRepository repositoryUser
     {
         switch (request.SortField.ToLower())
         {
-            case "topic":
+            case "Title":
                 query = request.Descending.HasValue && request.Descending.Value
                     ? query.OrderByDescending(e => e.Title)
                     : query.OrderBy(e => e.Title);
@@ -104,10 +106,10 @@ IUserRepository repositoryUser
                 Id = forum.Id,
                 UserId = forum.UserId,
                 Title = forum.Title,
-                TotalAnswer = forum.TotalAnswer,
+                TotalAnswer = forum.Comments.Count,
                 Content = forum.Content,
                 Username = username,
-                Created = forum.Created
+                Created = forum.Created,
             };
 
             resultList.Add(forumResponse);
@@ -141,7 +143,9 @@ IUserRepository repositoryUser
         item.TotalAnswer = item.Comments.Count;
         item.TotalLike = query.SelectMany(f => f.Likes).Count(l => l.Like);
         item.TotalDislike = query.SelectMany(f => f.Likes).Count(l => l.DisLike);
-
+        var isSaved = repositorySaved.FindBy(s => s.ForumId == id).Any();
+        item.IsSaved = isSaved;
+        
         return item;
     }
 

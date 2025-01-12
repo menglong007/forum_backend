@@ -56,6 +56,7 @@ public class CommentService(
                 Username = c.User?.Username,
                 Comment = c.Comment,
                 UserId = c.UserId,
+                Created = c.Created,
                 TotalLike = c.CommentLikes.Count(cl => cl.Like), // Count total likes
                 TotalDislike = c.CommentLikes.Count(cl => cl.DisLike), // Count total dislikes
                 Like = c.CommentLikes.Any(cl => cl.Like && cl.UserId == userId), // True if the user liked the comment
@@ -77,6 +78,7 @@ public class CommentService(
         var newItem = mapper.Map<CommentEntity>(request);
         newItem.ForumId = forumId;
         newItem.UserId = userId;
+        newItem.Created = DateTime.Now;
         var userExists = repositoryUser.FindBy(u => u.Id == userId).Any();
         if (!userExists)
         {

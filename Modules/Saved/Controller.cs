@@ -2,6 +2,7 @@
 using WebApplication1.Modules.Saved;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using WebApplication1.Core;
 
 namespace WebApplication1.Modules.Saved
 {
@@ -18,12 +19,12 @@ namespace WebApplication1.Modules.Saved
         }
 
         [HttpGet("Forum/{userId}")]
-        public IActionResult GetSavedItems(int userId)
+        public IActionResult GetSavedItems(int userId )
         {
             try
             {
                 var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-                dynamic result = _service.GetSaved(userId, token);
+                dynamic result = _service.GetSaved(userId, token );
 
                 // Check if the result is null or if the savedItems list is empty
                 if (result == null || result.data == null || result.data.Count == 0)
@@ -52,21 +53,6 @@ namespace WebApplication1.Modules.Saved
             catch (Exception ex)
             {
                 return BadRequest($"Failed to save item: {ex.Message}");
-            }
-        }
-        
-        [HttpDelete("Remove/{forumId}")]
-        public IActionResult RemoveSavedItems(int forumId)
-        {
-            try
-            {
-                var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-                _service.Delete(forumId, token);  // Pass forumId and token to delete saved items
-                return Ok("Items removed successfully.");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest($"Failed to remove items: {ex.Message}");
             }
         }
 

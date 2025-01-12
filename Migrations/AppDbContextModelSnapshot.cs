@@ -35,6 +35,9 @@ namespace WebApplication1.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("ForumId")
                         .HasColumnType("integer");
 
@@ -70,6 +73,9 @@ namespace WebApplication1.Migrations
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsSaved")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Title")
                         .IsRequired()

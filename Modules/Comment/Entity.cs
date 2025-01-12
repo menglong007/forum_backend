@@ -19,6 +19,7 @@ public class CommentEntity : IdEntity
     public int TotalDislike { get; set; } 
     public ForumEntity Forum { get; set; }
 
+    public DateTime Created { get; set; }
     public string Comment { get; set; } = null!;
     
     public ICollection<ReactEntity> CommentLikes { get; set; } = new List<ReactEntity>();

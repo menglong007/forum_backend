@@ -10,7 +10,7 @@ public class ForumResponse
     public string Content { get; set; } = null!;
     public string Username { get; set; } = null!;
     public DateTime Created { get; set; }
-    
+
 }
 
 public class ForumDetailResponse
@@ -21,6 +21,7 @@ public class ForumDetailResponse
     public int TotalDislike { get; set; }
     public string Content { get; set; } = null!;
     public DateTime Created { get; set; }
+    public bool IsSaved { get; set; } = false;
     public ICollection<CommentResponse> Comments { get; set; } = new List<CommentResponse>();  
 }
 
